@@ -18,3 +18,11 @@ def inicia_jogo(jogadores, pecas):
     dici["monte"] = monte
     return dici
 
+def verifica_ganhador(dicionario):
+    ganhador = -1
+
+    for jogador in dicionario:
+        if len(dicionario[jogador]) == 0:
+            ganhador = jogador
+    return ganhador
+    
