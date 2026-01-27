@@ -25,4 +25,10 @@ def verifica_ganhador(dicionario):
         if len(dicionario[jogador]) == 0:
             ganhador = jogador
     return ganhador
+
+def conta_pontos(lista):
+    soma = 0
+    for elemento in lista:
+        soma += elemento[0] + elemento[1]
+    return soma
     
