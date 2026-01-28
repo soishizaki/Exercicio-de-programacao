@@ -7,7 +7,6 @@ def cria_pecas():
             lista.append([i,j])
     random.shuffle(lista)
     return lista
-# fizemos juntas a função cria_pecas
 
 def inicia_jogo(jogadores, pecas):
     monte = pecas
@@ -43,6 +42,25 @@ def posicoes_possiveis(mesa, pecas):
             pecas_possiveis.append(i)
 
     return pecas_possiveis
+
+def adiciona_na_mesa(peca, mesa):
+    if len(mesa) == 0:
+        return [peca]
+    if peca[1] == mesa[0][0]:
+        mesa = [peca] + mesa
+        return mesa
+    if peca[0] == mesa[0][0]:
+        mesa = [[peca[1], peca[0]]] + mesa
+        return mesa
+    if peca[0] == mesa[-1][1]:
+        mesa = mesa + [peca]
+        return mesa
+    if peca[1] == mesa[-1][1]:
+        mesa = mesa + [[peca[1], peca[0]]]
+        return mesa
+
+    return mesa
+
 
 
 
