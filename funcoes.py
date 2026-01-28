@@ -31,4 +31,19 @@ def conta_pontos(lista):
     for elemento in lista:
         soma += elemento[0] + elemento[1]
     return soma
+
+def posicoes_possiveis(mesa, pecas):
+    pecas_possiveis = []
+
+    if len(mesa) == 0:
+        return list(range(len(pecas)))
+    
+    for i in range(len(pecas)):
+        if pecas[i][0] == mesa[0][0] or pecas[i][1] == mesa[0][0] or pecas[i][0] == mesa[-1][1] or pecas[i][1] == mesa[-1][1]:
+            pecas_possiveis.append(i)
+
+    return pecas_possiveis
+
+
+
     
