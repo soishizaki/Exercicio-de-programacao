@@ -33,29 +33,8 @@ print("\nMESA:\n")
 while True:
    ganhador = verifica_ganhador(jogo["jogadores"])
    if ganhador != -1:
-       print("MESA:")
-       if len(jogo["mesa"]) > 0:
-           linha = ""
-           for p in jogo["mesa"]:
-               linha += "[" + cores[p[0]] + str(p[0]) + reset + "|" + cores[p[1]] + str(p[1]) + reset + "]"
-           print(linha)
-       print()
-
-       vencedores = [ganhador]
-       for j in jogo["jogadores"]:
-           pts = conta_pontos(jogo["jogadores"][j])
-           if j == 0:
-               print("Jogador: Você sem peças e", pts, "pontos")
-           else:
-               print("Jogador:", j + 1, "sem peças e", pts, "pontos")
-
-       nomes = []
-       for v in vencedores:
-           if v == 0:
-               nomes.append("Você")
-           else:
-               nomes.append(str(v + 1))
-       print("\nVENCEDOR(ES):", ", ".join(nomes))
+       print("MESA:", jogo["mesa"])
+       print("VENCEDOR(ES):", "Você" if ganhador == 0 else (ganhador + 1))
        break
 
 
@@ -65,10 +44,18 @@ while True:
    posicao = posicoes_possiveis(mesa, mao)
 
    if len(posicao) == 0:
-       while len(posicao) == 0 and len(jogo["monte"]) > 0:
-           mao.append(jogo["monte"][0])
-           jogo["monte"] = jogo["monte"][1:]
-           posicao = posicoes_possiveis(mesa, mao)
+       if jogador_atual == 0:
+           while len(posicao) == 0 and len(jogo["monte"]) > 0:
+               print("Não tem peças possíveis. PEGANDO DO MONTE!")
+               input("[pressione ENTER]")
+               mao.append(jogo["monte"][0])
+               jogo["monte"] = jogo["monte"][2:]
+               posicao = posicoes_possiveis(mesa, mao)
+       else:
+           while len(posicao) == 0 and len(jogo["monte"]) > 0:
+               mao = mao + [jogo["monte"][0]]
+               jogo["monte"] = jogo["monte"][1:]
+               posicao = posicoes_possiveis(mesa, mao)
 
    if len(posicao) == 0:
        sem_jogar_seguidos += 1
@@ -79,17 +66,16 @@ while True:
            print("Jogador: Você com", len(mao), "peça(s)\n")
            for i in range(len(mao)):
                print(str(i + 1) + ":", mao[i])
-           print("Posições possíveis:", posicao)
 
            escolha = int(input("\nEscolha a peça: "))
            indice_escolhido = escolha - 1
 
-           if indice_escolhido in posicao:
+           if indice_escolhido not in posicao:
+               print("Não é possível jogar essa peça")
+           else:
                peca = mao.pop(indice_escolhido)
                jogo["mesa"] = adiciona_na_mesa(peca, jogo["mesa"])
                print("Colocou:", peca, "\n")
-           else:
-               print("Não é possível jogar essa peça")
        else:
            indice = random.choice(posicao)
            peca = mao.pop(indice)
@@ -109,26 +95,13 @@ while True:
 
        for j in jogo["jogadores"]:
            pts = conta_pontos(jogo["jogadores"][j])
-           if menor is None or pts > menor:
+           if menor is None or pts < menor:
                menor = pts
                vencedores = [j]
            elif pts == menor:
                vencedores.append(j)
 
-       for j in jogo["jogadores"]:
-           pts = conta_pontos(jogo["jogadores"][j])
-           if j == 0:
-               print("Jogador: Você com", pts, "pontos")
-           else:
-               print("Jogador:", j + 1, "com", pts, "pontos")
-
-       nomes = []
-       for v in vencedores:
-           if v == 0:
-               nomes.append("Você")
-           else:
-               nomes.append(str(v + 1))
-       print("\nVENCEDOR(ES):", ", ".join(nomes))
+       print("VENCEDOR(ES):", vencedores)
        break
 
 
